@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Actions\Package\CreatePackageAction;
 use App\DTOs\PackageDto;
+use Illuminate\Http\Request;
 use App\Http\Requests\StorePackageRequest;
 use App\Repositories\Contracts\PackageRepositoryInterface;
 
@@ -20,10 +21,15 @@ class PackageController extends Controller
      *
      * GET /api/packages
      */
-    public function index()
+    public function index(Request $request)
     {
-        $packages = $this->repository->paginate();
-        return response()->json($packages);
+        $search  = $request->input('search', null);
+        $perPage = (int) $request->input('per_page', 5);
+        $page    = (int) $request->input('page', 1);
+
+        $paginated = $this->repository->paginate($perPage, $search, $page);
+
+        return response()->json($paginated);
     }
 
     /**
@@ -46,6 +52,22 @@ class PackageController extends Controller
                 'status' => 'error',
                 'message' => 'Erro ao criar o pacote.',
                 'errors' => [$e->getMessage()]
+            ], 500);
+        }
+    }
+    public function destroy(int $id)
+    {
+        try {
+            $this->repository->delete($id);
+            return response()->json([
+                'status'  => 'success',
+                'message' => 'Pacote removido com sucesso.',
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status'  => 'error',
+                'message' => 'Não foi possível remover o pacote.',
+                'errors'  => [$e->getMessage()],
             ], 500);
         }
     }
