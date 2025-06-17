@@ -16,6 +16,6 @@ class Package extends Model
 
     public function exams()
     {
-        return $this->belongsToMany(Exam::class, 'exam_package')->withTimestamps();
+        return $this->belongsToMany(Exam::class);
     }
 }

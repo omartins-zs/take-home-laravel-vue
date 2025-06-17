@@ -4,6 +4,7 @@ namespace App\Repositories\Eloquent;
 
 use App\Models\Exam;
 use App\Repositories\Contracts\ExamRepositoryInterface;
+use Illuminate\Database\Eloquent\Collection;
 
 class ExamRepository implements ExamRepositoryInterface
 {
@@ -20,5 +21,10 @@ class ExamRepository implements ExamRepositoryInterface
     public function create(array $data): Exam
     {
         return Exam::create($data);
+    }
+
+    public function getAvulsos(): Collection
+    {
+        return Exam::whereDoesntHave('packages')->get();
     }
 }
