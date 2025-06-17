@@ -1,0 +1,110 @@
+{
+  "info": {
+    "_postman_id": "12345678-90ab-cdef-1234-567890abcdef",
+    "name": "EyeCare API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Exams",
+      "item": [
+        {
+          "name": "List Exams",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/exams"
+          }
+        },
+        {
+          "name": "Create Exam",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Acuidade Visual AO\",\n  \"laterality\": \"AO\",\n  \"comment\": \"Teste\",\n  \"group\": \"Grupo 1\"\n}"
+            },
+            "url": "{{baseUrl}}/api/exams"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Packages",
+      "item": [
+        {
+          "name": "List Packages",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/packages?page=1&per_page=5"
+          }
+        },
+        {
+          "name": "Create Package",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Check-up Básico\",\n  \"observations\": \"Teste pacote\",\n  \"exam_ids\": [1,2,3]\n}"
+            },
+            "url": "{{baseUrl}}/api/packages"
+          }
+        },
+        {
+          "name": "Delete Package",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": "{{baseUrl}}/api/packages/:id"
+          }
+        }
+      ]
+    },
+    {
+      "name": "PDF",
+      "item": [
+        {
+          "name": "Generate Avulsos PDF",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"avulsos\": 1\n}"
+            },
+            "url": "{{baseUrl}}/api/exams/pdf"
+          }
+        },
+        {
+          "name": "Generate Custom PDF",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"groups\": [\n    {\n      \"title\": \"Exames avulsos\",\n      \"printGroup\": \"Grupo 1\",\n      \"exams\": [ { \"name\": \"Exame X\", \"laterality\": \"AO\", \"comment\": \"Obs\", \"groupPrint\": \"Grupo 1\" } ],\n      \"observation\": \"Observação do grupo\"\n    }\n  ]\n}"
+            },
+            "url": "{{baseUrl}}/api/exams/pdf"
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8000"
+    }
+  ]
+}
