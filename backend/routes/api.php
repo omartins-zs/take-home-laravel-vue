@@ -14,7 +14,7 @@ Route::get('/', function () {
 Route::get('/exams', [ExamController::class, 'index']);
 Route::post('/exams', [ExamController::class, 'store']);
 
-Route::post('/exams/pdf', [ExamPdfController::class, 'generate']);
+Route::get('/exams/pdf/download', [ExamPdfController::class, 'download']);
 
 // Pacotes
 Route::get('/packages',   [PackageController::class, 'index']);
