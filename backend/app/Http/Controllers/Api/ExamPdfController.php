@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Services\ExamPdfService;
 use App\Repositories\Contracts\ExamRepositoryInterface;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Symfony\Component\HttpFoundation\Response;
 
 class ExamPdfController extends Controller
 {
@@ -14,7 +16,7 @@ class ExamPdfController extends Controller
         protected ExamRepositoryInterface $examRepo
     ) {}
 
-    public function generate(Request $request)
+    public function download(Request $request): Response
     {
         if ($request->filled('avulsos')) {
             $exams = $this->examRepo->getAvulsos();
@@ -37,8 +39,15 @@ class ExamPdfController extends Controller
             return response()->json(['error' => 'Nenhum grupo informado'], 422);
         }
 
-        $pdfUrl = $this->examPdfService->generate($groups);
+        $mocks = $this->examPdfService->getMocks();
 
-        return response()->json(['pdf_url' => $pdfUrl]);
+        $pdf = Pdf::loadView('pdf.exam-request', [
+            'groups'        => $groups,
+            'doctor'        => $mocks['doctor'],
+            'patient'       => $mocks['patient'],
+            'separatePages' => collect($groups)->pluck('printGroup')->unique()->count() > 1,
+        ])->setPaper('a4');
+
+        return $pdf->download('solicitacao_exames_' . now()->format('Ymd_His') . '.pdf');
     }
 }

@@ -4,7 +4,6 @@ namespace App\Services;
 
 use Barryvdh\DomPDF\Facade\Pdf;
 
-
 class ExamPdfService
 {
     public function generate(array $groups): string
@@ -36,5 +35,21 @@ class ExamPdfService
         $pdf->save($path);
 
         return asset("storage/{$filename}");
+    }
+
+    public function getMocks()
+    {
+        return [
+            'doctor' => [
+                'name' => 'Dr. Gabriel Martins',
+                'crm' => 'CRM 123456/SP',
+                'specialty' => 'Clínico Geral',
+            ],
+            'patient' => [
+                'name' => 'João da Silva',
+                'birth_date' => '1990-01-01',
+                'cpf' => '123.456.789-00',
+            ],
+        ];
     }
 }
