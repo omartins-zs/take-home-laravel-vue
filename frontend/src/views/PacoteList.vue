@@ -2,7 +2,10 @@
   <v-app class="d-flex flex-column fill-height pa-4">
     <div class="d-flex justify-end mb-4">
       <base-modal title="New Package">
-        <template #activator>
+        <template
+          slot="activator"
+          slot-scope
+        >
           <v-btn
             color="primary"
             dark
@@ -10,7 +13,11 @@
             New Package
           </v-btn>
         </template>
-        <template #body>
+
+        <template
+          slot="body"
+          slot-scope
+        >
           <pacote-form
             :exams="exams"
             @created="refresh"
@@ -18,6 +25,7 @@
         </template>
       </base-modal>
     </div>
+
 
     <v-card
       elevation="1"
@@ -32,7 +40,10 @@
         class="elevation-1 flex-grow-1"
         dense
       >
-        <template #item.exams="{ item }">
+        <template
+          slot="item.exams"
+          slot-scope="{ item }"
+        >
           <div class="d-flex flex-wrap">
             <v-chip
               v-for="ex in item.exams"

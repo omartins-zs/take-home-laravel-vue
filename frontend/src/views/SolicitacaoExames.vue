@@ -21,6 +21,7 @@
             v-model="selectedExam"
             :items="allExams"
             item-text="name"
+            item-value="id"
             label="Selecionar exame"
             clearable
             @change="addAvulso"
@@ -179,16 +180,33 @@ export default {
       const res = await api.get('/exams')
       this.allExams = res.data.data || res.data
     },
-    addAvulso(exam) {
+    addAvulso(examId) {
+      if (!examId) return
+
+      const exam = this.allExams.find(e => e.id === examId)
       if (!exam) return
-      this.examGroups.push({
-        title: 'Exames Avulsos',
-        exams: [{ ...exam, laterality: null, comment: '', groupPrint: this.impressaoOptions[0] }],
-        printGroup: this.impressaoOptions[0],
-        observation: '',
+
+      let avulsosGroup = this.examGroups.find(g => g.title === 'Exames Avulsos')
+
+      if (!avulsosGroup) {
+        avulsosGroup = {
+          title: 'Exames Avulsos',
+          exams: [],
+          printGroup: this.impressaoOptions[0],
+          observation: '',
+        }
+        this.examGroups.push(avulsosGroup)
+      }
+
+      avulsosGroup.exams.push({
+        ...exam,
+        laterality: null,
+        comment: '',
+        groupPrint: this.impressaoOptions[0],
       })
+
       this.selectedExam = null
-    },
+    },  
     applyPackages(pkgs) {
       pkgs.forEach(pkg => {
         this.examGroups.push({
@@ -215,10 +233,15 @@ export default {
       )
     },
     printPdf() {
-      api.post('/exams/pdf/download', { groups: this.examGroups })
-        .then(res => {
-          window.open(res.request.responseURL, '_blank')
-        })
+      if (!this.examGroups.length) return
+
+      try {
+        const params = encodeURIComponent(JSON.stringify(this.examGroups))
+        window.open(`${api.defaults.baseURL}/exams/pdf/download?groups=${params}`, '_blank')
+      } catch (err) {
+        console.error(err)
+        alert('Erro ao gerar PDF. Verifique os dados enviados.')
+      }
     }
   }
 }

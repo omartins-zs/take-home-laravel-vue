@@ -35,7 +35,7 @@
           />
 
           <v-data-table
-            v-model:options="options"
+            :options.sync="options"
             :headers="headers"
             :items="packages"
             :server-items-length="total"
@@ -43,14 +43,20 @@
             class="elevation-1"
             item-key="id"
           >
-            <template #item.select="{ item }">
+            <template
+              slot="item.select"
+              slot-scope="{ item }"
+            >
               <v-checkbox
                 v-model="selected"
                 :value="item"
               />
             </template>
 
-            <template #item.actions="{ item }">
+            <template
+              slot="item.actions"
+              slot-scope="{ item }"
+            >
               <v-btn
                 icon
                 small
