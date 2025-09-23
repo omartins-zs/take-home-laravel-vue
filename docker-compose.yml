@@ -3,21 +3,18 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
+    container_name: backend
     volumes:
       - ./backend:/var/www/html
     ports:
-      - "8000:8000"           # expõe a porta 8000
+      - "8081:8081"
     depends_on:
       - db
-    command: >
-      sh -c "
-        composer install &&
-        php artisan migrate &&
-        php artisan serve --host=0.0.0.0 --port=8000
-      "
+    command: sh ./docker-entrypoint.sh
 
   db:
-    image: mysql:7
+    image: mysql:5.7
+    container_name: db
     environment:
       MYSQL_DATABASE: takehome
       MYSQL_ROOT_PASSWORD: root
@@ -27,15 +24,17 @@ services:
       - db_data:/var/lib/mysql
 
   frontend:
-    image: node:20
-    working_dir: /app
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: frontend
     volumes:
       - ./frontend:/app
     ports:
-      - "8080:8080"
-    command: sh -c "npm install && npm run serve"
+      - "8000:8080"  # porta externa 8000 -> interna 8080
     depends_on:
       - backend
+    command: sh -c "npm install && npm run serve -- --host 0.0.0.0"
 
 volumes:
-  db_data:
+  db_data: {}
