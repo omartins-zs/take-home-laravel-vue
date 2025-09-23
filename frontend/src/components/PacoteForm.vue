@@ -45,7 +45,12 @@
 import api from '@/services/api'
 export default {
   name: 'PacoteForm',
-  props: { exams: Array },
+  props: {
+  exams: {
+      type: Array,
+      default: () => []
+    }
+  },
   data: () => ({
     valid: false,
     form: { name: '', observations: '', exam_ids: [] }
