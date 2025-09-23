@@ -53,7 +53,7 @@
     <h2>Solicitação de Exames</h2>
     <p><strong>Médico:</strong> {{ $doctor['name'] ?? '—' }} | <strong>CRM:</strong> {{ $doctor['crm'] ?? '—' }}</p>
     <p><strong>Paciente:</strong> {{ $patient['name'] ?? '—' }} | <strong>Nascimento:</strong>
-        {{ $patient['birth_date'] ?? '—' }} | <strong>Sexo:</strong> {{ $patient['gender'] ?? '—' }}</p>
+        {{ $patient['birth_date'] ?? '—' }} | <strong>Sexo:</strong> {{ $patient['gender'] ?? 'Masculino' }}</p>
 
     @foreach ($groups as $idx => $group)
         <div class="group-box">
