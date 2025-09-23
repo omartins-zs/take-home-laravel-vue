@@ -33,6 +33,10 @@ class ExamPdfController extends Controller
             ]];
         } else {
             $groups = $request->input('groups', []);
+
+            if (is_string($groups)) {
+                $groups = json_decode($groups, true) ?: [];
+            }
         }
 
         if (empty($groups)) {
