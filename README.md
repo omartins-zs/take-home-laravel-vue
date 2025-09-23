@@ -238,6 +238,16 @@ Este projeto foi estruturado como um **monorepo**, separando claramente o **fron
 
 ---
 
+## 🐳 Executando o projeto com Docker
+
+Para levantar o ambiente completo (backend, frontend e banco de dados), execute:
+
+```bash
+docker-compose up -d --build
+```
+
+---
+
 ## 🚧 Melhorias e Escalabilidade Futuras
 
 ### 🏗️ Arquitetura
