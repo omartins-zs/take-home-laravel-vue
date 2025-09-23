@@ -13,8 +13,8 @@ import { EventBus } from "@/event-bus";
 const api = axios.create({
   baseURL:
     process.env.VUE_APP_API_BASE_URL ||
-    //  "http://localhost:8081/api",
-    "http://backend:8081/api",
+     "http://localhost:8081/api",
+    // "http://backend:8081/api",
   timeout: 10000,
   headers: { Accept: "application/json" },
 });

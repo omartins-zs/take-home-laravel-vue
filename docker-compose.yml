@@ -18,6 +18,8 @@ services:
     environment:
       MYSQL_DATABASE: takehome
       MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: laravel
+      MYSQL_PASSWORD: secret
     ports:
       - "3306:3306"
     volumes:
@@ -31,10 +33,9 @@ services:
     volumes:
       - ./frontend:/app
     ports:
-      - "8000:8080"  # porta externa 8000 -> interna 8080
+      - "8000:8080"
     depends_on:
       - backend
-    command: sh -c "npm install && npm run serve -- --host 0.0.0.0"
 
 volumes:
-  db_data: {}
+  db_data:
